@@ -18,5 +18,5 @@
     "manifest_version": 2,
     "update_url": "http://clients2.google.com/service/update2/crx",
     "content_security_policy": "script-src 'self' https://www.google.com; object-src 'self'",
-    "version": "1.0.1"
+    "version": "1.0.2"
 }
