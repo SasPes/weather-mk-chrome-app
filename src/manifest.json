@@ -1,27 +1,25 @@
 {
-	"name": "Временска прогноза за Македонија",
-	"description": "Macedonia Weather | by SasPes",
-	"browser_action": {
-		"default_icon": "vreme-mk.png",
-		"default_title": "Временска прогноза за Македонија",
-		"default_popup": "vreme-mk.html"
-	},
-	"icons": {
-		"16": "vreme-mk.png",
-		"48": "vreme-mk.png",
-		"128": "vreme-mk.png"
-	},
-	"background": {
-		"page": "background.html"
-	},
-	"author": "SasPes",
-	"manifest_version": 2,
-	"update_url": "http://clients2.google.com/service/update2/crx",
-	"content_security_policy": "script-src 'self' https://www.google.com https://query.yahooapis.com; object-src 'self'",
-	"version": "1.0.6",
-	"applications": {
-		"gecko": {
-			"id": "jiolkebofokfhhhecjgkncaokljngnma@chromeStoreFoxified-1314903589"
-		}
-	}
+    "name": "Временска прогноза за Македонија",
+    "description": "Macedonia Weather | by SasPes",
+    "browser_action": {
+        "default_icon": "vreme-mk.png",
+        "default_title": "Временска прогноза за Македонија",
+        "default_popup": "vreme-mk.html"
+    },
+    "icons": {
+        "16": "vreme-mk.png",
+        "48": "vreme-mk.png",
+        "128": "vreme-mk.png"
+    },
+    "background": {
+        "page": "background.html"
+    },
+    "permissions": [
+        "http://wxdata.weather.com/*",
+        "https://query.yahooapis.com/*"
+    ],
+    "content_security_policy": "script-src 'self' https://query.yahooapis.com; object-src",
+    "author": "SasPes",
+    "manifest_version": 2,
+    "version": "1.0.6"
 }
