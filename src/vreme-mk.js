@@ -136,17 +136,19 @@ document.addEventListener('DOMContentLoaded', function () {
             min = "15";
         }
         if (min === "5") {
-            document.getElementById("min5").checked = true
+            document.getElementById("min5").checked = true;
         } else if (min === "30") {
-            document.getElementById("min30").checked = true
+            document.getElementById("min30").checked = true;
         } else if (min === "60") {
-            document.getElementById("min60").checked = true
+            document.getElementById("min60").checked = true;
         } else {
-            document.getElementById("min15").checked = true
+            document.getElementById("min15").checked = true;
         }
     }
 
-    weather();
+    if (pageName !== "background.html") {
+        weather();
+    }
 
     initialize();
 });
@@ -233,6 +235,8 @@ function weather() {
         imgExt = ".png";
     }
     src = src.replace(".gif", imgExt);
+    src = src.split("src=\"")[1];
+    src = src.split("\"")[0];
 
     // publishedDate
     var dateP = new Date(Date.parse(json.items[0].pubDate));
@@ -277,15 +281,40 @@ function weather() {
 
     if (pageName === "vreme-mk-conf.html") {
         var weatherPromena = document.getElementById('weatherPromena');
-        weatherPromena.innerHTML = "&nbsp; &nbsp; &nbsp; &nbsp;Последна промена: " + dateP;
+        weatherPromena.appendChild(document.createTextNode("&nbsp; &nbsp; &nbsp; &nbsp;Последна промена: " + dateP));
     } else {
         var weatherP = document.getElementById('weather');
-        weatherP.innerHTML =
-                "<p style='font-size: 23px'><b>" + gradIme + "</b><p>" +
-                "моментална температура<br/>" +
-                "<a href='http://www.weather.com/weather/today/" + gradId + "'>" + src + "</a><br/>" +
-                "<p style='font-size: 26px'><b>" + weather + "</b></p><br/>" +
-                "Последна промена: " + dateP;
+
+        var pGrad = document.createElement("p");
+        pGrad.style.cssText = "font-size: 23px";
+        var bGrad = document.createElement("b");
+        var tGrad = document.createTextNode(gradIme);
+        bGrad.appendChild(tGrad);
+        pGrad.appendChild(bGrad);
+        weatherP.appendChild(pGrad);
+
+        weatherP.appendChild(document.createElement("br"));
+        weatherP.appendChild(document.createTextNode("моментална температура"));
+        weatherP.appendChild(document.createElement("br"));
+
+        var aW = document.createElement("a");
+        aW.href = "http://www.weather.com/weather/today/" + gradId;
+        var tImg = document.createElement("img");
+        tImg.src = src;
+        aW.appendChild(tImg);
+        weatherP.appendChild(aW);
+        weatherP.appendChild(document.createElement("br"));
+
+        var pPP = document.createElement("p");
+        pPP.style.cssText = "font-size: 26px";
+        var bPP = document.createElement("b");
+        var tPP = document.createTextNode(weather);
+        bPP.appendChild(tPP);
+        pPP.appendChild(bPP);
+        weatherP.appendChild(pPP);
+        weatherP.appendChild(document.createElement("br"));
+
+        weatherP.appendChild(document.createTextNode("Последна промена: " + dateP));
 
         weatherForecast();
     }
@@ -330,35 +359,29 @@ var weatherForecastCallback = function (data) {
             }
 
             var weatherForecast = document.getElementById('weatherForecast');
-            weatherForecast.innerHTML =
-                    "<table>" +
-                    "<tr>" +
-                    "<td width='25%' align='center'>" +
-                    day0[0] + "<br/>" +
-                    "<img src=imgs/" + day0[3] + imgExt + ">" + "<br/>" +
-                    "мин: " + day0[1] + "\u00b0" + "C" + "<br/>" +
-                    "мах: " + day0[2] + "\u00b0" + "C" +
-                    "</td>" +
-                    "<td width='25%' align='center'>" +
-                    day1[0] + "<br/>" +
-                    "<img src=imgs/" + day1[3] + imgExt + ">" + "<br/>" +
-                    "мин: " + day1[1] + "\u00b0" + "C" + "<br/>" +
-                    "мах: " + day1[2] + "\u00b0" + "C" +
-                    "</td>" +
-                    "<td width='25%' align='center'>" +
-                    day2[0] + "<br/>" +
-                    "<img src=imgs/" + day2[3] + imgExt + ">" + "<br/>" +
-                    "мин: " + day2[1] + "\u00b0" + "C" + "<br/>" +
-                    "мах: " + day2[2] + "\u00b0" + "C" +
-                    "</td>" +
-                    "<td width='25%' align='center'>" +
-                    day3[0] + "<br/>" +
-                    "<img src=imgs/" + day3[3] + imgExt + ">" + "<br/>" +
-                    "мин: " + day3[1] + "\u00b0" + "C" + "<br/>" +
-                    "мах: " + day3[2] + "\u00b0" + "C" +
-                    "</td>" +
-                    "</tr>" +
-                    "</table>";
+
+            var tWfc = document.createElement("table");
+            var trWfc = document.createElement("tr");
+
+            var days = [day0, day1, day2, day3];
+            for (var i = 0 ; i < days.length ; i++) {
+                var tdWfc = document.createElement("td");
+                tdWfc.width = "25%";
+                tdWfc.align = "center";
+                tdWfc.appendChild(document.createTextNode(days[i][0]));
+                tdWfc.appendChild(document.createElement("br"));
+                var imgWfc = document.createElement("img");
+                imgWfc.src = "imgs/" + days[i][3] + imgExt;
+                tdWfc.appendChild(imgWfc);
+                tdWfc.appendChild(document.createElement("br"));
+                tdWfc.appendChild(document.createTextNode("мин: " + days[i][1] + "\u00b0" + "C"));
+                tdWfc.appendChild(document.createElement("br"));
+                tdWfc.appendChild(document.createTextNode("мах: " + days[i] [2] + "\u00b0" + "C"));
+                trWfc.appendChild(tdWfc);
+            }
+            
+            tWfc.appendChild(trWfc);
+            weatherForecast.appendChild(tWfc);
         }
     }
 };
